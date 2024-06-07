@@ -296,6 +296,10 @@ void write_block_bitmap(int fd)
     for (int i = NUM_BLOCKS - 1; i < BLOCK_SIZE * 8; i++) {
         map_value[i / 8] = map_value[i / 8] | (1 << (i % 8));
     }
+	for (int i = (NUM_BLOCKS + 7) / 8; i < BLOCK_SIZE; i++) {
+        map_value[i] = 0xFF;
+    }
+
 
 	if (write(fd, map_value, BLOCK_SIZE) != BLOCK_SIZE)
 	{
