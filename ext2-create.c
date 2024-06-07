@@ -316,18 +316,14 @@ void write_inode_bitmap(int fd)
 	// TODO It's all yours
 	u8 map_value[BLOCK_SIZE] = {0};
 
-	for(int i = 14; i<= NUM_INODES; i++){
-		map_value[(i-1)/8] &= ~(1 << ((i-1) % 8));
+	for (int i = 0; i < 13; i++) {
+		map_value[i / 8] |= (1 << (i % 8));
 	}
 
-	for (int i = NUM_INODES / 8; i < BLOCK_SIZE; i++) {
+	for (int i = (NUM_INODES + 7) / 8; i < BLOCK_SIZE; i++) {
 		map_value[i] = 0xFF;
 	}
 
-	if (write(fd, map_value, BLOCK_SIZE) != BLOCK_SIZE)
-	{
-		errno_exit("write");
-	}
 }
 
 void write_inode(int fd, u32 index, struct ext2_inode *inode) {
