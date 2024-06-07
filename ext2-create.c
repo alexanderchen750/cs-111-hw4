@@ -318,7 +318,7 @@ void write_inode_bitmap(int fd)
 		map_value[i / 8] |= (1 << (i % 8));
 	}
 
-	for (int i = (NUM_INODES + 7) / 8; i < BLOCK_SIZE; i++) {
+	for (int i = NUM_INODES / 8; i < BLOCK_SIZE; i++) {
 		map_value[i] = 0xFF;
 	}
 
