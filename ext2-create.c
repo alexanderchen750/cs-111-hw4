@@ -292,11 +292,9 @@ void write_block_bitmap(int fd)
 	for (int i = 0; i < 23; i++) {
     	map_value[i / 8] |= (1 << (i % 8));
 	}
-	
-	for (int i = 24; i <= 1023; i++) {
-    	map_value[(i-1) / 8] &= ~(1 << ((i-1) % 8));
-	}
 	map_value[127] = 0x80;
+	memset(&map_value[128], 0xFF, BLOCK_SIZE - 128);
+	
 
 
 	if (write(fd, map_value, BLOCK_SIZE) != BLOCK_SIZE)
