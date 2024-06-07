@@ -322,6 +322,10 @@ void write_inode_bitmap(int fd)
 		map_value[i] = 0xFF;
 	}
 
+	if (write(fd, map_value, BLOCK_SIZE) != BLOCK_SIZE)
+	{
+		errno_exit("write");
+	}
 }
 
 void write_inode(int fd, u32 index, struct ext2_inode *inode) {
