@@ -287,7 +287,15 @@ void write_block_bitmap(int fd)
 	}
 
 	// TODO It's all yours
-	u8 map_value[BLOCK_SIZE];
+	u8 map_value[BLOCK_SIZE] = {0};
+
+	for (int i = SUPERBLOCK_BLOCKNO; i <= LAST_BLOCK; i++) {
+        map_value[i / 8] = map_value[i / 8] | (1 << (i % 8));
+    }
+
+    for (int i = NUM_BLOCKS - 1; i < BLOCK_SIZE * 8; i++) {
+        map_value[i / 8] = map_value[i / 8] | (1 << (i % 8));
+    }
 
 	if (write(fd, map_value, BLOCK_SIZE) != BLOCK_SIZE)
 	{
@@ -304,7 +312,11 @@ void write_inode_bitmap(int fd)
 	}
 
 	// TODO It's all yours
-	u8 map_value[BLOCK_SIZE];
+	u8 map_value[BLOCK_SIZE] = {0};
+
+	for(int i = 14; i<= NUM_INODES; i++){
+		map_value[(i-1)/8] &= ~(1 << ((i-1) % 8));
+	}
 
 	if (write(fd, map_value, BLOCK_SIZE) != BLOCK_SIZE)
 	{
