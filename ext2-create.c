@@ -378,7 +378,7 @@ void write_inode_table(int fd) {
 							| EXT2_S_IRUSR
 							| EXT2_S_IWUSR
 							| EXT2_S_IRGRP
-							| EXT2_S_IROTH		
+							| EXT2_S_IROTH;	
 	hello_world_inode.i_uid = 1000;
 	hello_world_inode.i_size = 12;
 	hello_world_inode.i_atime = current_time;
@@ -396,7 +396,7 @@ void write_inode_table(int fd) {
 							| EXT2_S_IRUSR
 							| EXT2_S_IWUSR
 							| EXT2_S_IRGRP
-							| EXT2_S_IROTH		
+							| EXT2_S_IROTH;		
 	hello_inode.i_uid = 1000;
 	hello_inode.i_size = 11;
 	hello_inode.i_atime = current_time;
@@ -419,6 +419,8 @@ void write_root_dir_block(int fd)
 	if (off == -1) {
 		errno_exit("lseek");
 	}
+	
+	ssize_t bytes_remaining = BLOCK_SIZE;
 
 	struct ext2_dir_entry current_entry = {0};
 	dir_entry_set(current_entry, EXT2_ROOT_INO, ".");
